@@ -12,7 +12,7 @@ let command = process.argv[2];
 function Router() {
     let found = false;
     for(key in Controllers){
-        if(Controllers[key].comand === command)  {
+        if(Controllers[key].command === command)  {
             Controllers[key].func(inputs);
             found = true;
         }      
