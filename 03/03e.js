@@ -10,12 +10,13 @@ let inputs = process.argv.slice(3);
 let command = process.argv[2];
 
 function Router() {
+    // console.log(command);
     let found = false;
-    for(key in Controllers){
-        if(Controllers[key].command === command)  {
+    for (key in Controllers) {
+        if (Controllers[key].prompt === command) {
             Controllers[key].func(inputs);
             found = true;
-        }      
+        }
     }
 
     if (!found) {
@@ -25,12 +26,14 @@ function Router() {
 
 let Controllers = [
     {
-        command:"sum",
-        func:function(x){
+        prompt: "sum",
+        func: function (x) {
             console.log(Number(x[0]) + Number(x[1]));
-        },
-        command:"minus",
-        func:function(x){
+        }
+    },
+    {
+        prompt: "minus",
+        func: function (x) {
             console.log(Number(x[0]) - Number(x[1]));
         }
     }
