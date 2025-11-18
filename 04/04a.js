@@ -3,17 +3,17 @@
 //     family : "vahedi",
 //     age : 18
 // };
-// let fs = require('fs');
 import fs from 'fs'
-let inputs = process.argv.slice(3);
+// let fs = require('fs');
 let command = process.argv[2];
+let inputs = process.argv.slice(3);
 
 function Router() {
     // console.log(command);
     let found = false;
-    for (key in Controllers) {
-        if (Controllers[key].prompt === command) {
-            Controllers[key].func(inputs);
+    for (let item of Controllers) {
+        if (item.prompt === command) {
+            item.func(inputs);
             found = true;
         }
     }
@@ -109,7 +109,7 @@ let Controllers = [
     {
         prompt: "createRecord",
         func: function (x) {
-            record = {
+            let record = {
                 name: x[0],
                 email: x[1]
             }
