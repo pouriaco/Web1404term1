@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sum Page</title>
+</head>
+<body style="margin: 0;  padding: 0; background-color: #016B61;">
+    <div id="page" style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;">
+        <div id="form" style="width: auto; height: auto; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 50px; border-radius: 12px; background-color: aliceblue;">
+            <span>Login</span>
+            <input type="text" placeholder="username" id="i1" style="border-radius: 50px; padding:10px ; border: 0.5px solid rgb(82, 82, 82);">
+            <input type="text" placeholder="password" id="i2" style="border-radius: 50px; padding:10px ; border: 0.5px solid rgb(82, 82, 82);">
+            <input type="submit" id="btn" value="Login" style="background-color: #016B61; color: white; padding: 10px; border-radius: 50px; border:0.5px solid; width: 100%;">
+            <div id="result">
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function sum() {
+            let input1 = document.getElementById("i1").value;
+            let input2 = document.getElementById("i2").value;
+
+            let body = {
+                user:input1,
+                pass:input2
+            }
+
+            let response = await fetch("http://127.0.0.1/login" , 
+                {
+                    method:'POST',
+                    body:JSON.stringify(body)
+                }
+            );
+
+            if (!response.ok) {
+                console.log("response is not ok");
+            }
+            else{
+                let data = await response.json();
+                let resDiv = document.getElementById('result');
+                let span = document.createElement('span');
+                span.innerHTML = data.result;
+                resDiv.appendChild(span);
+                console.log(data);
+            }
+
+            
+        }
+
+        let btn = document.getElementById("btn");
+        btn.addEventListener("click" , ()=>{
+            sum();
+        })
+    </script>
+</body>
+</html>

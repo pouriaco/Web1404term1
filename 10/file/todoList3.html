@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoList</title>
+    <style>
+        #title {
+            width: 100%;
+            height: 40px;
+            /* border: 1px solid black; */
+            background-color: #016B61;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #tablesDiv {
+            width: 100%;
+            height: auto;
+            /* border: 1px solid black; */
+            margin-top: 10px;
+        }
+
+        .table {
+            width: 25%;
+            height: 400px;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #016B61;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+        }
+
+        .table div {
+            /* height: 100px; */
+            /* width: 100%; */
+            /* border-ra; */
+            /* border: 1px solid black; */
+
+        }
+
+        .top {
+            height: 10%;
+            display: flex;
+            /* flex-direction: column; */
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .mid {
+            height: 80%;
+            border-radius: 10px;
+            background-color: white;
+            color: black;
+            padding: 20px;
+        }
+
+        .bottom {
+            margin-top: 10px;
+            height: 10%;
+            display: flex;
+            /* flex-direction: column; */
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .taskInput {
+            width: 75%;
+            border-radius: 50px;
+            border: 0px;
+            height: 20px;
+        }
+
+        .submitButton {
+            width: 20%;
+            border-radius: 50px;
+            border: 0px;
+            height: 20px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title"> <span>my todo list</span> </div>
+
+    <div id="tablesDiv">
+        <div class="table" id="todoTable">
+            <div class="top">TODO</div>
+            <div class="mid" id="mid">
+                <!-- <input type="checkbox" id="ch1" name="ch1" class="checkboxItem" value="work"> -->
+              <!--   <label for="ch1">work</label>
+                <br> -->
+            </div>
+            <div class="bottom">
+                <input type="text" id="todoInput" class="taskInput">
+                <input type="submit" value="OK" id="submitButton" class="submitButton">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let btn=document.getElementById("submitButton");
+        let textBox=document.getElementById("todoInput");
+        btn.addEventListener("click",()=>{
+            
+        })
+
+        async function addTask() {
+            let response = await fetch("http://127.0.0.1/getRecords");
+
+            if (!response.ok) {
+                console.log("response is not ok");
+            }
+            else {
+
+                
+                console.log(data.result);
+            }
+        }
+        
+        async function getAllRecords() {
+            let response = await fetch("http://127.0.0.1/getRecords");
+
+            if (!response.ok) {
+                console.log("response is not ok");
+            }
+            else {
+                let data = await response.json();
+                let midDiv = document.getElementById('mid');
+
+                // console.log(data.result.length);
+                for (let index = 0; index < data.result.length; index++) {
+
+                    let input = document.createElement('input');
+                    input.setAttribute("type", "checkbox");
+                    input.setAttribute("id", String(data.result[index].id));
+                    input.setAttribute("name", String(data.result[index].id));
+                    console.log(data.result[index].state);
+                    if (data.result[index].state) {
+                        input.setAttribute("checked", true)
+                    }
+
+                    let lable = document.createElement('label');
+                    lable.setAttribute("for", String(data.result[index].id));
+                    lable.innerHTML = data.result[index].task;
+
+
+
+                    let br = document.createElement('br');
+
+                    input.addEventListener("click", () => {
+                        checkRecords(data.result[index].id);
+                    })
+                    midDiv.appendChild(input);
+                    midDiv.appendChild(lable);
+                    midDiv.appendChild(br);
+                }
+                console.log(data.result);
+            }
+        }
+        getAllRecords();
+
+        async function checkRecords(index) {
+
+            let body = {
+                id:index
+            }
+
+            let response = await fetch("http://127.0.0.1/checkRecords",
+                {
+                    method: 'PUT',
+                    body: JSON.stringify(body)
+                }
+            );
+
+            if (!response.ok) {
+                console.log("response is not ok");
+            }
+            else {
+                let data = await response.json();
+                console.log(data.result);
+                getAllRecords();
+            }
+        }
+    </script>
+</body>
+
+</html>
